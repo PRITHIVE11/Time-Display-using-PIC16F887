@@ -1,0 +1,61 @@
+#include <xc.h>
+#define _XTAL_FREQ 4000000
+#define delay 5
+void main(void) 
+{
+    int ar[]={0X3F,0X06,0X5B,0X4F,0X66,0X6D,0X7D,0X07,0X7F,0X6F};//COMMON CATHODE
+    int a,r,l,t,y,s,n,z,x;
+    int dot=0X80;
+    PORTA=TRISA=0X00;
+    PORTB=TRISB=0X00;
+    ANSEL=ANSELH=0X00;
+    
+        while(1)
+        {
+            for(int h=0;h<24;h++)
+                {
+                for(int m=0;m<60;m++)
+                    {
+                    for(s=0;s<60;s++)
+                    {
+                        r=s%10;
+                        l=s/10;
+                        t=m%10;
+                        y=m/10;
+                        z=h%10;
+                        x=h/10;
+                        for(n=0;n<33;n++)//MINIMIZING DELAY
+                        {
+                            //SECONDS
+                            RA1=RA2=RA3=RA4=RA5=1; RA0=0;
+                            PORTB=ar[l];
+                            __delay_ms(delay);
+                            RA0=RA2=RA3=RA4=RA5=1; RA1=0;
+                            PORTB=ar[r];
+                            __delay_ms(delay);
+                            
+                            //MINUTES
+                            RA0=RA1=RA3=RA4=RA5=1,RA2=0;
+                            PORTB=ar[y];
+                            __delay_ms(delay);
+                            RA0=RA1=RA2=RA4=RA5=1,RA3=0;
+                            PORTB=ar[t]+dot;
+                            __delay_ms(delay);
+
+                            //HOURS
+                            RA0=RA1=RA3=RA2=RA5=1,RA4=0;
+                            PORTB=ar[x];
+                            __delay_ms(delay);
+                            RA0=RA1=RA2=RA3=RA4=1,RA5=0;
+                            PORTB=ar[z]+dot;
+                            __delay_ms(delay);
+                        }
+                    }
+
+            }     
+        
+        
+    }
+   }
+    return;
+}
